@@ -2302,7 +2302,7 @@ bool explodeSurge(std::string surge, std::vector<Proxy> &nodes) {
                         }
                         if (remarks.empty())
                             remarks = server + ":" + port;
-                        vlessConstruct(node, XRAY_DEFAULT_GROUP, remarks, server, port, "", id, aead, net, method,
+                        vlessConstruct(node, XRAY_DEFAULT_GROUP, remarks, server, port, "", id, aead, net,
                                        "chrome", "", path, host, "",
                                        tls, "", "", fp, sni, udp, tfo, scv, tls13);
                         break;
