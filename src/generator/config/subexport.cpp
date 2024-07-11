@@ -1436,7 +1436,7 @@ void proxyToQuanX(std::vector<Proxy> &nodes, INIReader &ini, std::vector<Ruleset
                 break;
             case ProxyType::VLESS:
                 if (method == "auto")
-                    method = "chacha20-ietf-poly1305";
+                    method = "none";
                 proxyStr = "vless = " + hostname + ":" + port + ", method=" + method + ", password=" + id;
                 if (x.AlterId != 0)
                     proxyStr += ", aead=false";
