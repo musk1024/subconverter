@@ -1,0 +1,18 @@
+FROM alpine:3.20 AS builder
+ARG THREADS=4
+WORKDIR /src
+COPY scripts/build.linux.deps.sh /tmp/build-deps.sh
+RUN sh /tmp/build-deps.sh
+COPY . .
+RUN cmake -S . -B /build -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_EXE_LINKER_FLAGS=-static -DCURL_NO_CURL_CMAKE=TRUE \
+      -DCMAKE_PROJECT_subconverter_INCLUDE=/src/cmake/StaticLinux.cmake \
+      -DCMAKE_CXX_STANDARD_LIBRARIES="-lmbedtls -lmbedx509 -lmbedcrypto -lz -ldl -pthread" \
+    && cmake --build /build -j "$THREADS" \
+    && file /build/subconverter | grep 'statically linked' \
+    && python3 scripts/update_rules.py -c scripts/rules_config.conf \
+    && mkdir -p /out/subconverter \
+    && cp -a base/. /out/subconverter/ \
+    && install -m755 /build/subconverter /out/subconverter/subconverter
+FROM scratch
+COPY --from=builder /out/ /
