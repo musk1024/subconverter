@@ -41,10 +41,13 @@ jobs:
           cache-to: type=gha,mode=max,scope=${{ matrix.artifact }}
       - name: Test Surge 6 and Surge 5 compatibility
         run: |
-          docker run -d --name converter --add-host=host.docker.internal:host-gateway -p 127.0.0.1:25500:25500 -v "$PWD/release/subconverter:/base" -w /base alpine:3.20 ./subconverter
+          docker run -d --name converter -p 127.0.0.1:25500:25500 -v "$PWD/release/subconverter:/base" -w /base alpine:3.20 ./subconverter
           trap 'docker logs converter; docker rm -f converter' EXIT
           python3 scripts/test_surge6.py
-          python3 scripts/test_https.py
+          docker run --rm --network container:converter \
+            -e TLS_FIXTURE_HOST=127.0.0.1 \
+            -v "$PWD/scripts:/tests:ro" python:3.12-alpine \
+            sh -c 'apk add --no-cache openssl >/dev/null && python /tests/test_https.py'
       - name: Package
         env:
           ARTIFACT: ${{ matrix.artifact }}
