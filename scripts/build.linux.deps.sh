@@ -1,11 +1,11 @@
 #!/bin/sh
 set -eu
 THREADS=${THREADS:-4}
-apk add --no-cache build-base linux-headers cmake git python3 py3-gitpython mbedtls-dev mbedtls-static zlib-dev zlib-static rapidjson-dev pcre2-dev pkgconf file
+apk add --no-cache build-base linux-headers cmake git python3 py3-gitpython openssl-dev openssl-libs-static zlib-dev zlib-static rapidjson-dev pcre2-dev pkgconf file
 mkdir -p /deps
 cd /deps
 git clone --depth 1 --branch curl-8_6_0 https://github.com/curl/curl.git curl
-cmake -S curl -B curl/build -DCURL_USE_MBEDTLS=ON -DHTTP_ONLY=ON -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DCURL_USE_LIBSSH2=OFF -DBUILD_CURL_EXE=OFF
+cmake -S curl -B curl/build -DCURL_USE_MBEDTLS=OFF -DCURL_USE_OPENSSL=ON -DHTTP_ONLY=ON -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DCURL_USE_LIBSSH2=OFF -DBUILD_CURL_EXE=OFF
 cmake --build curl/build -j "$THREADS"
 cmake --install curl/build
 git clone --depth 1 --branch 0.8.0 https://github.com/jbeder/yaml-cpp.git yaml-cpp

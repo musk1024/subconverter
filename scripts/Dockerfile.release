@@ -7,7 +7,7 @@ COPY . .
 RUN cmake -S . -B /build -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_EXE_LINKER_FLAGS=-static -DCURL_NO_CURL_CMAKE=TRUE \
       -DCMAKE_PROJECT_subconverter_INCLUDE=/src/cmake/StaticLinux.cmake \
-      -DCMAKE_CXX_STANDARD_LIBRARIES="-lmbedtls -lmbedx509 -lmbedcrypto -lz -ldl -pthread" \
+      -DCMAKE_CXX_STANDARD_LIBRARIES="-lssl -lcrypto -lz -ldl -pthread" \
     && cmake --build /build -j "$THREADS" \
     && file /build/subconverter | grep 'statically linked' \
     && python3 scripts/update_rules.py -c scripts/rules_config.conf \

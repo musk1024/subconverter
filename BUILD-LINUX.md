@@ -4,6 +4,8 @@ The `Linux release` workflow builds and tests statically linked amd64 and arm64
 packages on native GitHub-hosted runners. No Docker Hub credentials are needed.
 Push a `v*` tag to publish both archives and SHA-256 files in one GitHub Release;
 publication happens only after both builds and conversion smoke tests succeed.
+The HTTPS regression test downloads a synthetic subscription, external config and
+rule set through the compiled converter using a temporary local TLS server.
 
 Local build (Docker required):
 

@@ -1,6 +1,6 @@
 #ifndef VERSION_H_INCLUDED
 #define VERSION_H_INCLUDED
 
-#define VERSION "v0.9.9-surge6.1"
+#define VERSION "v0.9.9-surge6.2"
 
 #endif // VERSION_H_INCLUDED
